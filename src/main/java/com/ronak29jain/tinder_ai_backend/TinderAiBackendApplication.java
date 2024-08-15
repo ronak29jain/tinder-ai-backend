@@ -30,24 +30,39 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("My app is running");
-        Profile profile = new Profile(
-                "124",
+        profileRepository.deleteAll();
+        conversationRepository.deleteAll();
+
+        Profile profile1 = new Profile(
+                "1",
                 "Ankit",
                 "Sharma",
                 30,
                 Gender.MALE,
                 "Asian",
-                "I'm looking for a job in the tech industry.",
+                "I'm looking for beautiful girl",
                 "ankit.jpg",
                 "INTP"
         );
-        profileRepository.save(profile);
+        Profile profile2 = new Profile(
+                "2",
+                "Ankita",
+                "Bansal",
+                28,
+                Gender.FEMALE,
+                "Asian",
+                "I'm looking for a handsome boy who loves chai",
+                "ankita.jpg",
+                "INTP"
+        );
+        profileRepository.save(profile1);
+        profileRepository.save(profile2);
         profileRepository.findAll().forEach(System.out::println);
 
         Conversation conversation = new Conversation(
                 "26",
-                profile.id(),
-                List.of(new ChatMessage("hey there!", profile.id(), LocalDateTime.now()))
+                profile1.id(),
+                List.of(new ChatMessage("hey there!", profile1.id(), LocalDateTime.now()))
         );
 
         conversationRepository.save(conversation);
