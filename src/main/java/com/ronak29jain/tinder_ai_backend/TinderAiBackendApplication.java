@@ -6,6 +6,9 @@ import com.ronak29jain.tinder_ai_backend.conversations.ConversationRepository;
 import com.ronak29jain.tinder_ai_backend.profiles.Gender;
 import com.ronak29jain.tinder_ai_backend.profiles.Profile;
 import com.ronak29jain.tinder_ai_backend.profiles.ProfileRepository;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +26,9 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     @Autowired
     private ConversationRepository conversationRepository;
 
+    @Autowired
+    private OllamaChatModel ollamaChatModel;
+
     public static void main(String[] args) {
         SpringApplication.run(TinderAiBackendApplication.class, args);
     }
@@ -30,6 +36,11 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("My app is running");
+
+        Prompt prompt = new Prompt("what is java? tell me in 50 words");
+        ChatResponse chatResponse = ollamaChatModel.call(prompt);
+        System.out.println(chatResponse.getResult().getOutput().getContent());
+
         profileRepository.deleteAll();
         conversationRepository.deleteAll();
 
@@ -61,7 +72,7 @@ public class TinderAiBackendApplication implements CommandLineRunner {
 
         Conversation conversation = new Conversation(
                 "26",
-                profile1.id(),
+                List.of(profile1.id(), profile2.id()),
                 List.of(new ChatMessage("hey there!", profile1.id(), LocalDateTime.now()))
         );
 
