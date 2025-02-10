@@ -5,9 +5,8 @@ import com.ronak29jain.tinder_ai_backend.conversations.Conversation;
 import com.ronak29jain.tinder_ai_backend.conversations.ConversationRepository;
 import com.ronak29jain.tinder_ai_backend.profiles.Gender;
 import com.ronak29jain.tinder_ai_backend.profiles.Profile;
+import com.ronak29jain.tinder_ai_backend.profiles.ProfileGenerationService;
 import com.ronak29jain.tinder_ai_backend.profiles.ProfileRepository;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +26,9 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     private ConversationRepository conversationRepository;
 
     @Autowired
+    private ProfileGenerationService profileGenerationService;
+
+    @Autowired
     private OllamaChatModel ollamaChatModel;
 
     public static void main(String[] args) {
@@ -37,9 +39,12 @@ public class TinderAiBackendApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("My app is running");
 
-        Prompt prompt = new Prompt("what is java? tell me in 50 words");
-        ChatResponse chatResponse = ollamaChatModel.call(prompt);
-        System.out.println(chatResponse.getResult().getOutput().getContent());
+//        Prompt prompt = new Prompt("what is java? tell me in 50 words");
+//        ChatResponse chatResponse = ollamaChatModel.call(prompt);
+//        System.out.println(chatResponse.getResult().getOutput().getContent());
+
+//        profileGenerationService.generateProfiles(0);
+        profileGenerationService.generateImageForExistingProfiles();
 
         profileRepository.deleteAll();
         conversationRepository.deleteAll();
