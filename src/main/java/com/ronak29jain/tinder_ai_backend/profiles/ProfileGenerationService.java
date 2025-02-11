@@ -31,7 +31,7 @@ public class ProfileGenerationService {
 
     private static final String STABLE_DIFFUSION_URL = "http://127.0.0.1:7860/sdapi/v1/txt2img";
 
-//    @Autowired
+    //    @Autowired
     private final HttpClient httpClient;
 
 //    @Autowired
@@ -39,7 +39,7 @@ public class ProfileGenerationService {
 
     private HttpRequest.Builder stableDiffusionRequestBuilder;
 
-//    @Autowired
+    //    @Autowired
     private OllamaChatModel ollamaChatModel;
 
 //    @Autowired
@@ -205,20 +205,22 @@ public class ProfileGenerationService {
 //        String imageUrl = response.getResult().getOutput().getContent();
 
 //      save the image url in the photoUrl field in the profile
-        record ImageResponse(List<String> images) {};
+        record ImageResponse(List<String> images) {
+        }
+        ;
 
         Gson gson = new Gson();
         ImageResponse imageResponse = gson.fromJson((String) response.body(), ImageResponse.class);
-        if(imageResponse.images() != null && !imageResponse.images().isEmpty()) {
+        if (imageResponse.images() != null && !imageResponse.images().isEmpty()) {
             String base64Image = imageResponse.images().getFirst();
 
             //Decode Base64 to binary
             byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
             String directoryPath = "src/main/resources/static/images/";
-            String filePath = directoryPath  + profile.photoUrl();
+            String filePath = directoryPath + profile.photoUrl();
             Path directory = Paths.get(directoryPath);
 
-            if(!Files.exists(directory)) {
+            if (!Files.exists(directory)) {
                 try {
                     Files.createDirectories(directory);
                 } catch (IOException e) {
